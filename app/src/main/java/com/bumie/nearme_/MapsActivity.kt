@@ -78,7 +78,7 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
         val client = OkHttpClient().newBuilder().build()
         val places = FetchPlaces.getPlaces_(client)
 
-        //This is just a thread hack that waits for 3 seconds when network call completes.
+        //This is just a thread hack that waits for 3 seconds when network call completes
         Handler(Looper.getMainLooper()).postDelayed({
             MaterialAlertDialogBuilder(this)
                 .setTitle("Successful")
