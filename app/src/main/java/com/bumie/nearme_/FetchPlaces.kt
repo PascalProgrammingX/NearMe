@@ -15,7 +15,7 @@ object FetchPlaces {
         coroutineScope{
             val fetchPlaces = async(Dispatchers.IO + SupervisorJob()) {
                 val request: Request = Request.Builder()
-                    .header("Authorization", "Bearer 6b3QcQ63HckBWklQjaAywDvGSG8X")
+                    .header("Authorization", "Bearer ZzNLGCzjnh5AtXZhDpOQqjbcp5H4")
                     .url("https://test.api.amadeus.com/v1/reference-data/locations/pois?&latitude=41.397158&longitude=2.160873&radius=2")
                     .method("GET", null)
                     .build()
@@ -76,6 +76,7 @@ object FetchPlaces {
 
                                     // Add the new {@link College} to the list of colleges.
                                     places.add(college)
+                                    Log.d("debugger: RESPONSE", places.size.toString())
                                 }
                             } catch (e: JSONException) {
                                 // If an error is thrown when executing any of the above statements in the "try" block,

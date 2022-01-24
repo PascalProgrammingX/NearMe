@@ -13,7 +13,6 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.bumie.nearme_.databinding.ActivityMapsBinding
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -78,12 +77,12 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
     private suspend fun fetchPlaces(){
         val client = OkHttpClient().newBuilder().build()
         val places = FetchPlaces.getPlaces(client)
+        Log.d("debugger: SIZE", places.size.toString())
         updateMap(places)
     }
 
 
     private fun updateMap(places:ArrayList<Datum>){
-        Log.d("debugger", places.size.toString())
         Intent(this, PlacesActivity::class.java).apply {
             putExtra("places", places)
             startActivity(this)
