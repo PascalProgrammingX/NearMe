@@ -18,7 +18,7 @@ object FetchPlaces {
         coroutineScope{
             val fetchPlaces = async(Dispatchers.IO + SupervisorJob()) {
                 val request: Request = Request.Builder()
-                    .header("Authorization", "Bearer pPvva4KL3w0uw4WSV9AkUcgkTXBQ")
+                    .header("Authorization", "Bearer 2H33vZC3GRBBNJjMb2ccYBVpgxDu")
                     .url("https://test.api.amadeus.com/v1/reference-data/locations/pois?&latitude=41.397158&longitude=2.160873&radius=2")
                     .method("GET", null)
                     .build()
@@ -107,7 +107,7 @@ object FetchPlaces {
         coroutineScope{
             val fetchPlaces = async(Dispatchers.IO + SupervisorJob()) {
                 val request: Request = Request.Builder()
-                    .header("Authorization", "Bearer pPvva4KL3w0uw4WSV9AkUcgkTXBQ")
+                    .header("Authorization", "Bearer 2H33vZC3GRBBNJjMb2ccYBVpgxDu")
                     .url("https://test.api.amadeus.com/v1/reference-data/locations/pois?&latitude=41.397158&longitude=2.160873&radius=2")
                     .method("GET", null)
                     .build()
@@ -142,7 +142,7 @@ object FetchPlaces {
                                     val longitude = geoCode.getDouble("longitude")
                                     val category = currentCollege.getString("category")
                                     // Create a new {@link College} object with the city, latitude, longitude
-                                    val college = Places(latitude, longitude, name, category)
+                                    val college = Places(longitude, latitude, name, category)
                                     places.add(college)
                                 }
                             } catch (e: JSONException) {

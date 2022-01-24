@@ -1,11 +1,12 @@
 package com.bumie.nearme_
 
 
-import android.content.Intent
 import androidx.fragment.app.FragmentActivity
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.GoogleMap
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import com.google.android.gms.maps.model.LatLng
 import java.lang.StringBuilder
@@ -65,7 +66,9 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
         mMap = googleMap
         // Add a marker in Sydney and move the camera
         val sydney = LatLng(41.397158, 2.160873)
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Barcelona"))
+        val ghana = LatLng(21.397158, 5.160873)
+        mMap.addMarker(MarkerOptions().draggable(true).position(sydney).title("Marker in Barcelona"))
+        mMap.addMarker(MarkerOptions().draggable(true).position(ghana).title("Marker in Ghana"))
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
 
     }
@@ -74,11 +77,22 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
     private suspend fun fetchPlaces(){
         val client = OkHttpClient().newBuilder().build()
         val places = FetchPlaces.getPlaces_(client)
-        updateMap(places)
+
+        //This is just a thread hack that waits for 3 seconds when network call completes.
+        Handler(Looper.getMainLooper()).postDelayed({
+            MaterialAlertDialogBuilder(this)
+                .setTitle("Successful")
+                .setMessage("${places.size} places Found. Dismiss to explore.")
+                .setPositiveButton("Dismiss"){ dialog, _ ->
+                    dialog.dismiss()
+                }
+                .show()
+            updateMap(places)
+        }, 3000)
     }
 
-    private suspend fun updateMap(places:ArrayList<Places>){
-      for (i in places.indices) {
+    private fun updateMap(places:ArrayList<Places>){
+      for (i in 0 until  places.size) {
              val currentPlace = places[i]
              Log.d("debugger: ", Gson().toJson(currentPlace))
              //Fetch information of a place
@@ -87,11 +101,11 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
              val latitude = currentPlace.latitude
              val longitude = currentPlace.longitude
              //Place Marker on a Place
-             val coordinate = LatLng(latitude!!, longitude!!)
              CoroutineScope(Dispatchers.Main)
-                     mMap.addMarker(MarkerOptions().position(coordinate).title(title).snippet(city))
+                     mMap.addMarker(MarkerOptions().draggable(true)
+                         .position(LatLng(longitude!!, latitude!!))
+                         .title(title).snippet(city))
              }
-
          }
     }
 
